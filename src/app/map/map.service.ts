@@ -5,7 +5,7 @@ import Feature from 'ol/Feature';
 import { fromLonLat } from 'ol/proj';
 import OlMap from 'ol/Map';
 import OlView from 'ol/View';
-import { Style, Icon, Fill, Text, Stroke, Symbol } from 'ol/style';
+import { Style, Icon, Fill, Text, Stroke } from 'ol/style';
 
 /**
  * Openlayers map service to acces maps by id

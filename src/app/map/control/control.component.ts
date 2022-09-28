@@ -64,10 +64,10 @@ export class ControlComponent implements OnInit {
 
     // Get the target if outside the map
     const target = this.elementRef.nativeElement.parentElement ? this.elementRef.nativeElement : null;
-    
-    
-    
-    
+
+
+
+
     // Create the control
     const mark = new BookmarkCtrl({ target: target });
     map.addControl(mark);
@@ -92,20 +92,20 @@ export class ControlComponent implements OnInit {
 
 
 		// Add a save button with on active event
-		
+
     var save = new olext_control_Button (
 				{	html: '<i class="fa fa-download"></i>',
 					className: "save",
 					title: "Save",
 					handleClick: function(e)
-					{	
+					{
             console.log("Save click",e);
             console.log("Vector features",vector.getSource().getFeatures());
 
 					}
 				});
 		map.addControl ( save );
-  
+
 
 
   // Add the editbar
@@ -173,7 +173,7 @@ export class ControlComponent implements OnInit {
     tooltip.setFeature();
     tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
 
- 
+
     console.log('DrawPolygon end',e.feature.getGeometry().getCoordinates());
     console.log('DrawPolygon end e',e);
     console.log('DrawPolygon map',this.map);

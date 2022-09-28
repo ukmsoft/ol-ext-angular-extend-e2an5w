@@ -42,7 +42,7 @@ export class MapComponent implements OnInit {
 
   /** Zoom of the map
    */
-  @Input() zoom: string;
+  @Input() zoom: any;
 
 
 
