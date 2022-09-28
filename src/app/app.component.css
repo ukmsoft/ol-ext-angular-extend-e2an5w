@@ -6,14 +6,14 @@ app-map {
     width: 100%;
   }
 #map1 {
-  width: 100%;
+  width: 50%;
   height: 70%;
   right: 0;
   left: auto;
 }
 
 #display1 {
-  width: 100%;
+  width: 50%;
   right: auto;
   left: 0;
 }
