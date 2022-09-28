@@ -30,7 +30,14 @@
               "./node_modules/ol/ol.css",
               "./node_modules/ol-ext/dist/ol-ext.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -48,7 +55,6 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -57,7 +63,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
