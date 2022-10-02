@@ -15,11 +15,12 @@ export class AppComponent {
   ngOnInit(){
     this.mapdataService.dataChanged
     .subscribe({
-      next: (v) =>{ 
+      next: (v) =>{
         console.log(`Geo Changed: ${v}`);
         this.geoObj = v.toString();
+        console.log('geoObj', this.geoObj);
       }
-      
+
 });
   }
 

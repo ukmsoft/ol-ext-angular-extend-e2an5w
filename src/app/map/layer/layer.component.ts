@@ -1,15 +1,14 @@
-import { Component, Input, OnInit, Host } from '@angular/core';
+import { Component, Input, OnInit, Host } from "@angular/core";
 
-import { MapService } from '../map.service';
-import { MapidService } from '../mapid.service';
-import OlMap from 'ol/Map';
-import OSM from 'ol/source/OSM';
-import Stamen from 'ol/source/Stamen';
-import OlTileLayer from 'ol/layer/Tile';
-
-import * as l from 'ol/layer';
-import * as s from 'ol/source';
-
+import { MapService } from "../map.service";
+import { MapidService } from "../mapid.service";
+import OlMap from "ol/Map";
+import OSM from "ol/source/OSM";
+import Stamen from "ol/source/Stamen";
+import OlTileLayer from "ol/layer/Tile";
+import xyz from "ol/source/XYZ";
+import * as l from "ol/layer";
+import * as s from "ol/source";
 
 /**
  * Add layers to a map
@@ -19,10 +18,9 @@ import * as s from 'ol/source';
   </app-map>
  */
 @Component({
-  selector: 'app-layer',
-  template: ''
+  selector: "app-layer",
+  template: "",
 })
-
 export class LayerComponent implements OnInit {
   /** Layer */
   @Input() layer;
@@ -33,14 +31,17 @@ export class LayerComponent implements OnInit {
   /** Layer visibility */
   @Input() visibility = true;
 
-markerVSource = new s.Vector({ features: [], attributions: 'National UFO Reporting Center', });
+  markerVSource = new s.Vector({
+    features: [],
+    attributions: "National UFO Reporting Center",
+  });
   /** Define the service
    */
   constructor(
     private mapService: MapService,
     @Host()
     private mapidService: MapidService
-  ) { }
+  ) {}
 
   /** Add layer to the map
    */
@@ -50,43 +51,49 @@ markerVSource = new s.Vector({ features: [], attributions: 'National UFO Reporti
     // Add the layer
     let layer;
     switch (this.layer) {
-      case 'marker': {
-        layer = new l.Vector({ 
-          source: this.markerVSource 
-        });
-         break;
-      }
-      case 'watercolor': {
-        layer = new OlTileLayer({
-          source: new Stamen({ layer: 'watercolor' })
-        });
-        break;
-      }
-      case 'labels': {
-        layer = new OlTileLayer({
-          source: new Stamen({ layer: 'toner-labels' })
-        });
-        break;
-      }
-      case 'OSM':
+      // case "marker": {
+      //   layer = new l.Vector({
+      //     source: this.markerVSource,
+      //   });
+      //   break;
+      // }
+      // case "watercolor": {
+      //   layer = new OlTileLayer({
+      //     source: new Stamen({ layer: "watercolor" }),
+      //   });
+      //   break;
+      // }
+      // case "labels": {
+      //   layer = new OlTileLayer({
+      //     source: new Stamen({ layer: "toner-labels" }),
+      //   });
+      //   break;
+      // }
+      // case "OSM": {
+      //   layer = new OlTileLayer({
+      //     source: new OSM(),
+      //   });
+      // }
       default: {
         layer = new OlTileLayer({
-          source: new OSM()
+          source: new xyz({
+            url: "https://www.amcharts.com/wp-content/uploads/2013/12/demo_910_none-1.png",
+          }),
         });
       }
     }
-    if (this.layer == 'marker') {
-       const features = this.mapService.olPtsLayer() 
-       const mStyle = this.mapService.markerStyle(); 
-       this.markerVSource.addFeatures(features) 
-       layer.setStyle(mStyle); 
-       layer.setVisible(this.visibility); 
-       layer.setOpacity(this.opacity); console.log(this.markerVSource.getFeatures())
-        }
-    layer.set('name', this.name || this.layer);
+    // if (this.layer == "marker") {
+    //   const features = this.mapService.olPtsLayer();
+    //   const mStyle = this.mapService.markerStyle();
+    //   this.markerVSource.addFeatures(features);
+    //   layer.setStyle(mStyle);
+    //   layer.setVisible(this.visibility);
+    //   layer.setOpacity(this.opacity);
+    //   console.log(this.markerVSource.getFeatures());
+    // }
+    layer.set("name", this.name || this.layer);
     layer.setOpacity(this.opacity);
     layer.setVisible(this.visibility);
     map.addLayer(layer);
   }
-
 }

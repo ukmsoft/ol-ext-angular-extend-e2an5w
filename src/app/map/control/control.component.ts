@@ -69,8 +69,8 @@ export class ControlComponent implements OnInit {
 
 
     // Create the control
-    const mark = new BookmarkCtrl({ target: target });
-    map.addControl(mark);
+    // const mark = new BookmarkCtrl({ target: target });
+    // map.addControl(mark);
 
 
 
@@ -83,8 +83,6 @@ export class ControlComponent implements OnInit {
 
   // Vector callback
     vector.on('change', function(e){
-    console.log('VECTOR change',e);
-    console.log('VECTOR change - features',vector.getSource().getFeatures());
     const geoJsonValue = new GeoJSON().writeFeatures(vector.getSource().getFeatures());
     mapdataService.updateData(geoJsonValue);
     });
@@ -93,18 +91,18 @@ export class ControlComponent implements OnInit {
 
 		// Add a save button with on active event
 
-    var save = new olext_control_Button (
-				{	html: '<i class="fa fa-download"></i>',
-					className: "save",
-					title: "Save",
-					handleClick: function(e)
-					{
-            console.log("Save click",e);
-            console.log("Vector features",vector.getSource().getFeatures());
+    // var save = new olext_control_Button (
+		// 		{	html: '<i class="fa fa-download"></i>',
+		// 			className: "save",
+		// 			title: "Save",
+		// 			handleClick: function(e)
+		// 			{
+    //         console.log("Save click",e);
+    //         console.log("Vector features",vector.getSource().getFeatures());
 
-					}
-				});
-		map.addControl ( save );
+		// 			}
+		// 		});
+		// map.addControl ( save );
 
 
 
@@ -116,32 +114,32 @@ export class ControlComponent implements OnInit {
   var tooltip = new Tooltip();
   map.addOverlay(tooltip);
 
-  edit.getInteraction('Select').on('select', function(e){
-    if (this.getFeatures().getLength()) {
-      tooltip.setInfo('Drag points on features to edit...');
-    }
-    else tooltip.setInfo();
-  });
-  edit.getInteraction('Select').on('change:active', function(e){
-    tooltip.setInfo('');
-  });
-  edit.getInteraction('ModifySelect').on('modifystart', function(e){
-    if (e.features.length===1) tooltip.setFeature(e.features[0]);
-  });
-  edit.getInteraction('ModifySelect').on('modifyend', function(e){
-    tooltip.setFeature();
-  });
-  edit.getInteraction('DrawPoint').on('change:active', function(e){
-    tooltip.setInfo(e.oldValue ? '' : 'Click map to place a point...');
-  });
-  edit.getInteraction('DrawLine').on(['change:active','drawend'], function(e){
-    tooltip.setFeature();
-    tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing line...');
-  });
-  edit.getInteraction('DrawLine').on('drawstart', function(e){
-    tooltip.setFeature(e.feature);
-    tooltip.setInfo('Click to continue drawing line...');
-  });
+  // edit.getInteraction('Select').on('select', function(e){
+  //   if (this.getFeatures().getLength()) {
+  //     tooltip.setInfo('Drag points on features to edit...');
+  //   }
+  //   else tooltip.setInfo();
+  // });
+  // edit.getInteraction('Select').on('change:active', function(e){
+  //   tooltip.setInfo('');
+  // });
+  // edit.getInteraction('ModifySelect').on('modifystart', function(e){
+  //   if (e.features.length===1) tooltip.setFeature(e.features[0]);
+  // });
+  // edit.getInteraction('ModifySelect').on('modifyend', function(e){
+  //   tooltip.setFeature();
+  // });
+  // edit.getInteraction('DrawPoint').on('change:active', function(e){
+  //   tooltip.setInfo(e.oldValue ? '' : 'Click map to place a point...');
+  // });
+  // edit.getInteraction('DrawLine').on(['change:active','drawend'], function(e){
+  //   tooltip.setFeature();
+  //   tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing line...');
+  // });
+  // edit.getInteraction('DrawLine').on('drawstart', function(e){
+  //   tooltip.setFeature(e.feature);
+  //   tooltip.setInfo('Click to continue drawing line...');
+  // });
 
 
 
@@ -153,73 +151,65 @@ export class ControlComponent implements OnInit {
   }); */
 
 
-  edit.getInteraction('DrawPolygon').on('drawstart', function(e){
-    console.log('CHANGE Draw shape',e);
-    tooltip.setFeature(e.feature);
-    e.feature.getGeometry().on('change', (e) => {calculateMeasure(e, edit.getMap(), tooltip)});
-    tooltip.setInfo('Click to continue drawing shape...');
-    });
+  // edit.getInteraction('DrawPolygon').on('drawstart', function(e){
+  //   console.log('CHANGE Draw shape',e);
+  //   tooltip.setFeature(e.feature);
+  //   e.feature.getGeometry().on('change', (e) => {calculateMeasure(e, edit.getMap(), tooltip)});
+  //   tooltip.setInfo('Click to continue drawing shape...');
+  //   });
 
 
 
 
 
-  edit.getInteraction('DrawPolygon').on(['change:active'], function(e){
-    tooltip.setFeature();
-    tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
-  });
+  // edit.getInteraction('DrawPolygon').on(['change:active'], function(e){
+  //   tooltip.setFeature();
+  //   tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
+  // });
 
-  edit.getInteraction('DrawPolygon').on(['drawend'], function(e){
-    tooltip.setFeature();
-    tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
+  // edit.getInteraction('DrawPolygon').on(['drawend'], function(e){
+  //   tooltip.setFeature();
+  //   tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
+  //   // this.mapdataService.updateData("Map changed");
+  // });
 
-
-    console.log('DrawPolygon end',e.feature.getGeometry().getCoordinates());
-    console.log('DrawPolygon end e',e);
-    console.log('DrawPolygon map',this.map);
-    console.log('DrawPolygon - Vector features',vector.getSource().getFeatures());
-
-
-    // this.mapdataService.updateData("Map changed");
-  });
-
-  edit.getInteraction('DrawHole').on('drawstart', function(e){
-    tooltip.setFeature(e.feature);
-    tooltip.setInfo('Click to continue drawing hole...');
-  });
-  edit.getInteraction('DrawHole').on(['change:active','drawend'], function(e){
-    tooltip.setFeature();
-    tooltip.setInfo(e.oldValue ? '' : 'Click polygon to start drawing hole...');
-  });
-  edit.getInteraction('DrawRegular').on('drawstart', function(e){
-    tooltip.setFeature(e.feature);
-    tooltip.setInfo('Move and click map to finish drawing...');
-  });
-  edit.getInteraction('DrawRegular').on(['change:active','drawend'], function(e){
-    tooltip.setFeature();
-    tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
-  });
+  // edit.getInteraction('DrawHole').on('drawstart', function(e){
+  //   tooltip.setFeature(e.feature);
+  //   tooltip.setInfo('Click to continue drawing hole...');
+  // });
+  // edit.getInteraction('DrawHole').on(['change:active','drawend'], function(e){
+  //   tooltip.setFeature();
+  //   tooltip.setInfo(e.oldValue ? '' : 'Click polygon to start drawing hole...');
+  // });
+  // edit.getInteraction('DrawRegular').on('drawstart', function(e){
+  //   tooltip.setFeature(e.feature);
+  //   tooltip.setInfo('Move and click map to finish drawing...');
+  // });
+  // edit.getInteraction('DrawRegular').on(['change:active','drawend'], function(e){
+  //   tooltip.setFeature();
+  //   tooltip.setInfo(e.oldValue ? '' : 'Click map to start drawing shape...');
+  // });
 
 
 
-    let calculateMeasure = (e, map,tooltip ) => {
-      // function calculateMeasure(e) {
-        console.log('CalculateMeasure',e, map, tooltip);
-        var geom = e.target;
-        var proj = map.getView().getProjection();
-        console.log('Projection',proj);
-        // var totalLength = 99;
-        var totalLength = tooltip.formatLength(ol_sphere_getLength(geom, { projection: proj }));
-        // Last segment length
-        var g = geom.getCoordinates()[0];
-        var l = g.length-2;
-        var p0 = ol_proj_transform(g[l], proj, 'EPSG:4326')
-        var p1 = ol_proj_transform(g[l-1], proj, 'EPSG:4326')
-        // measure
-        var length = totalLength +' - '+ tooltip.formatLength(ol_sphere_getDistance(p0,p1));
-        var measure = tooltip.get('measure');
-        tooltip.set('measure', (measure ? measure+' - ':'') + length)
-      }
+    // let calculateMeasure = (e, map,tooltip ) => {
+    //   // function calculateMeasure(e) {
+    //     console.log('CalculateMeasure',e, map, tooltip);
+    //     var geom = e.target;
+    //     var proj = map.getView().getProjection();
+    //     console.log('Projection',proj);
+    //     // var totalLength = 99;
+    //     var totalLength = tooltip.formatLength(ol_sphere_getLength(geom, { projection: proj }));
+    //     // Last segment length
+    //     var g = geom.getCoordinates()[0];
+    //     var l = g.length-2;
+    //     var p0 = ol_proj_transform(g[l], proj, 'EPSG:4326')
+    //     var p1 = ol_proj_transform(g[l-1], proj, 'EPSG:4326')
+    //     // measure
+    //     var length = totalLength +' - '+ tooltip.formatLength(ol_sphere_getDistance(p0,p1));
+    //     var measure = tooltip.get('measure');
+    //     tooltip.set('measure', (measure ? measure+' - ':'') + length)
+    //   }
 
   }
 
